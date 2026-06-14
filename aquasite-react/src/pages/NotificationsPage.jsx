@@ -44,35 +44,35 @@ const NotificationsPage = () => {
     gap: '14px',
     padding: '14px 16px',
     marginBottom: '8px',
-    borderRadius: '12px',
-    border: '1px solid rgba(255,255,255,0.08)',
-    background: isRead ? 'rgba(255,255,255,0.03)' : 'rgba(0,212,255,0.07)',
-    borderLeft: isRead ? '3px solid transparent' : '3px solid #00d4ff',
+    borderRadius: '14px',
+    border: '1px solid rgba(255,255,255,0.07)',
+    background: isRead ? 'rgba(0,20,45,0.7)' : 'rgba(0,212,255,0.07)',
+    borderLeft: isRead ? '3px solid transparent' : '3px solid rgba(0,212,255,0.7)',
     cursor: 'pointer',
-    transition: 'background 0.15s'
+    transition: 'all 0.2s ease',
   })
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%)', padding: '20px' }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #020e1e 0%, #011628 40%, #012233 70%, #013344 100%)', padding: '20px' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto' }}>
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
           <button
             onClick={() => navigate('/home')}
-            style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px' }}
+            style={{ background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)', color: '#00d4ff', borderRadius: '50%', width: '38px', height: '38px', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
           >
             ←
           </button>
-          <h1 style={{ color: 'white', margin: 0, fontSize: '20px' }}>Notificações</h1>
+          <h1 style={{ color: '#f0f9ff', margin: 0, fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.2px' }}>Notificações</h1>
         </div>
 
-        {loading && <p style={{ color: '#71767b', textAlign: 'center' }}>Carregando...</p>}
+        {loading && <p style={{ color: 'rgba(200,230,240,0.4)', textAlign: 'center', fontSize: '0.875rem' }}>Carregando...</p>}
 
         {!loading && notifications.length === 0 && (
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
-            <div style={{ fontSize: '48px', marginBottom: '12px' }}>🔔</div>
-            <p style={{ color: '#71767b' }}>Nenhuma notificação ainda.</p>
+            <div style={{ fontSize: '42px', marginBottom: '12px', opacity: 0.4 }}>🔔</div>
+            <p style={{ color: 'rgba(200,230,240,0.35)', fontSize: '0.875rem' }}>Nenhuma notificação ainda.</p>
           </div>
         )}
 
@@ -87,16 +87,17 @@ const NotificationsPage = () => {
             >
               {/* Avatar do remetente */}
               {notif.sender_avatar
-                ? <img src={notif.sender_avatar} alt="" style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-                : <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: 'rgba(0,212,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0 }}>👤</div>
+                ? <img src={notif.sender_avatar} alt="" style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '1.5px solid rgba(0,212,255,0.2)' }} />
+                : <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0, border: '1.5px solid rgba(0,212,255,0.15)' }}>👤</div>
               }
 
               {/* Ícone do tipo */}
-              <div style={{ position: 'relative', marginLeft: '-22px', marginTop: '20px', flexShrink: 0 }}>
+              <div style={{ position: 'relative', marginLeft: '-22px', marginTop: '22px', flexShrink: 0 }}>
                 <span style={{
-                  background: notif.type === 'like' ? '#ff3040' : notif.type === 'comment' ? '#00d4ff' : '#8b5cf6',
-                  borderRadius: '50%', width: '20px', height: '20px',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px'
+                  background: notif.type === 'like' ? '#e11d48' : notif.type === 'comment' ? '#0077b6' : '#6d28d9',
+                  borderRadius: '50%', width: '18px', height: '18px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px',
+                  boxShadow: '0 1px 6px rgba(0,0,0,0.4)'
                 }}>
                   {cfg.icon}
                 </span>
@@ -104,19 +105,19 @@ const NotificationsPage = () => {
 
               {/* Texto */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: 'white', margin: 0, fontSize: '14px' }}>
+                <p style={{ color: 'rgba(240,249,255,0.9)', margin: 0, fontSize: '0.875rem', lineHeight: 1.5 }}>
                   <strong style={{ color: '#00d4ff' }}>@{notif.sender}</strong>{' '}
-                  <span style={{ color: '#ccc' }}>{cfg.label}</span>
+                  <span style={{ color: 'rgba(200,230,240,0.7)' }}>{cfg.label}</span>
                 </p>
                 {notif.message && (
-                  <p style={{ color: '#71767b', margin: '3px 0 0', fontSize: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <p style={{ color: 'rgba(200,230,240,0.4)', margin: '3px 0 0', fontSize: '0.8rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     "{notif.message}"
                   </p>
                 )}
               </div>
 
               {/* Tempo */}
-              <span style={{ color: '#71767b', fontSize: '12px', flexShrink: 0 }}>
+              <span style={{ color: 'rgba(200,230,240,0.35)', fontSize: '0.75rem', flexShrink: 0 }}>
                 {timeAgo(notif.created_at)}
               </span>
             </div>

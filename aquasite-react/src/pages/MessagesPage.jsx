@@ -26,7 +26,7 @@ const MessagesPage = () => {
 
   const loadConversations = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/messages/conversations/${currentUser}`)
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/conversations/${currentUser}`)
       const data = await res.json()
       setConversations(data)
     } catch {}
@@ -34,7 +34,7 @@ const MessagesPage = () => {
 
   const loadMessages = async (other) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/messages/${currentUser}/${other}`)
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/${currentUser}/${other}`)
       const data = await res.json()
       setMessages(data)
     } catch {}
@@ -43,7 +43,7 @@ const MessagesPage = () => {
   const sendMessage = async () => {
     if (!newMessage.trim() || !activeChat) return
     try {
-      const res = await fetch('http://localhost:4000/api/messages', {
+      const res = await fetch('https://aquasite-frontend.onrender.com/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sender: currentUser, receiver: activeChat, content: newMessage })
@@ -61,88 +61,96 @@ const MessagesPage = () => {
   }
 
   const sidebarStyle = {
-    width: '260px', background: 'rgba(255,255,255,0.04)', borderRight: '1px solid rgba(255,255,255,0.08)',
-    display: 'flex', flexDirection: 'column', flexShrink: 0
-  }
-  const chatStyle = {
-    flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden'
+    width: '240px',
+    background: 'rgba(0, 15, 35, 0.7)',
+    borderRight: '1px solid rgba(255,255,255,0.07)',
+    display: 'flex',
+    flexDirection: 'column',
+    flexShrink: 0
   }
 
   if (!currentUser) return null
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%)' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'linear-gradient(160deg, #020e1e 0%, #011628 40%, #012233 70%, #013344 100%)' }}>
 
       {/* Top bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.2)' }}>
-        <button onClick={() => navigate('/home')} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '34px', height: '34px', cursor: 'pointer', fontSize: '16px' }}>←</button>
-        <h1 style={{ color: 'white', margin: 0, fontSize: '18px' }}>💬 Mensagens</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', borderBottom: '1px solid rgba(0,212,255,0.1)', background: 'rgba(2, 12, 28, 0.92)', backdropFilter: 'blur(20px)' }}>
+        <button
+          onClick={() => navigate('/home')}
+          style={{ background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)', color: '#00d4ff', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+        >←</button>
+        <h1 style={{ color: '#f0f9ff', margin: 0, fontSize: '1.05rem', fontWeight: 700, letterSpacing: '-0.2px' }}>Mensagens</h1>
       </div>
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
-        {/* Lista de conversas */}
+        {/* Conversations list */}
         <div style={sidebarStyle}>
-          <div style={{ padding: '14px', borderBottom: '1px solid rgba(255,255,255,0.08)', color: '#71767b', fontSize: '13px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'rgba(200,230,240,0.4)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px' }}>
             Conversas
           </div>
           <div style={{ overflowY: 'auto', flex: 1 }}>
             {conversations.length === 0 && (
-              <p style={{ color: '#71767b', fontSize: '14px', padding: '16px', textAlign: 'center' }}>Nenhuma conversa ainda.</p>
+              <p style={{ color: 'rgba(200,230,240,0.3)', fontSize: '0.8rem', padding: '16px', textAlign: 'center' }}>Nenhuma conversa ainda.</p>
             )}
             {conversations.map(conv => (
               <div
                 key={conv.other_user}
                 onClick={() => openChat(conv.other_user)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 14px', cursor: 'pointer',
-                  background: activeChat === conv.other_user ? 'rgba(0,212,255,0.1)' : 'transparent',
-                  borderLeft: activeChat === conv.other_user ? '3px solid #00d4ff' : '3px solid transparent',
-                  transition: 'background 0.15s'
+                  display: 'flex', alignItems: 'center', gap: '11px', padding: '11px 12px', cursor: 'pointer',
+                  background: activeChat === conv.other_user ? 'rgba(0,212,255,0.08)' : 'transparent',
+                  borderLeft: activeChat === conv.other_user ? '3px solid rgba(0,212,255,0.7)' : '3px solid transparent',
+                  transition: 'all 0.15s ease'
                 }}
               >
                 {conv.avatar
-                  ? <img src={conv.avatar} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />
-                  : <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(0,212,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>👤</div>
+                  ? <img src={conv.avatar} alt="" style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '1.5px solid rgba(0,212,255,0.15)' }} />
+                  : <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>👤</div>
                 }
                 <div style={{ overflow: 'hidden' }}>
-                  <p style={{ color: 'white', margin: 0, fontWeight: 'bold', fontSize: '14px' }}>@{conv.other_user}</p>
-                  <p style={{ color: '#71767b', margin: 0, fontSize: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.last_message}</p>
+                  <p style={{ color: '#f0f9ff', margin: 0, fontWeight: 600, fontSize: '0.85rem' }}>@{conv.other_user}</p>
+                  <p style={{ color: 'rgba(200,230,240,0.4)', margin: 0, fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.last_message}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Área de chat */}
-        <div style={chatStyle}>
+        {/* Chat area */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {!activeChat ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71767b', fontSize: '15px' }}>
-              Selecione uma conversa ou pesquise um usuário para começar.
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'rgba(200,230,240,0.25)', gap: '12px' }}>
+              <div style={{ fontSize: '40px', opacity: 0.3 }}>💬</div>
+              <p style={{ fontSize: '0.875rem' }}>Selecione uma conversa para começar.</p>
             </div>
           ) : (
             <>
-              {/* Header do chat */}
-              <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Link to={`/usuario/${activeChat}`} style={{ color: '#00d4ff', fontWeight: 'bold', textDecoration: 'none', fontSize: '16px' }}>@{activeChat}</Link>
+              {/* Chat header */}
+              <div style={{ padding: '12px 18px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0,15,35,0.5)' }}>
+                <Link to={`/usuario/${activeChat}`} style={{ color: '#00d4ff', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>@{activeChat}</Link>
               </div>
 
-              {/* Mensagens */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Messages */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {messages.length === 0 && (
-                  <p style={{ color: '#71767b', textAlign: 'center', marginTop: '40px' }}>Nenhuma mensagem ainda. Diga olá!</p>
+                  <p style={{ color: 'rgba(200,230,240,0.3)', textAlign: 'center', marginTop: '40px', fontSize: '0.875rem' }}>Nenhuma mensagem ainda. Diga olá!</p>
                 )}
                 {messages.map(msg => {
                   const isMine = msg.sender === currentUser
                   return (
                     <div key={msg.id} style={{ display: 'flex', justifyContent: isMine ? 'flex-end' : 'flex-start' }}>
                       <div style={{
-                        maxWidth: '70%', padding: '10px 14px', borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                        background: isMine ? '#00d4ff' : 'rgba(255,255,255,0.1)',
-                        color: 'white', fontSize: '14px', wordBreak: 'break-word'
+                        maxWidth: '68%', padding: '9px 14px',
+                        borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                        background: isMine ? 'linear-gradient(135deg, #00b8e0, #0070aa)' : 'rgba(0,30,65,0.9)',
+                        border: isMine ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                        color: 'white', fontSize: '0.9rem', wordBreak: 'break-word',
+                        boxShadow: isMine ? '0 4px 14px rgba(0,184,224,0.2)' : 'none'
                       }}>
                         {msg.content}
-                        <div style={{ fontSize: '11px', color: isMine ? 'rgba(255,255,255,0.7)' : '#71767b', marginTop: '4px', textAlign: 'right' }}>
+                        <div style={{ fontSize: '0.7rem', color: isMine ? 'rgba(255,255,255,0.65)' : 'rgba(200,230,240,0.35)', marginTop: '4px', textAlign: 'right' }}>
                           {msg.created_at ? new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}
                         </div>
                       </div>
@@ -153,17 +161,17 @@ const MessagesPage = () => {
               </div>
 
               {/* Input */}
-              <div style={{ padding: '14px 20px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', gap: '10px' }}>
+              <div style={{ padding: '12px 18px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '10px', background: 'rgba(0,15,35,0.5)' }}>
                 <input
                   value={newMessage}
                   onChange={e => setNewMessage(e.target.value)}
                   onKeyPress={e => e.key === 'Enter' && sendMessage()}
                   placeholder={`Mensagem para @${activeChat}...`}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '24px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: 'white', fontSize: '14px', outline: 'none' }}
+                  style={{ flex: 1, padding: '10px 16px', borderRadius: '50px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.875rem', outline: 'none' }}
                 />
                 <button
                   onClick={sendMessage}
-                  style={{ padding: '10px 20px', borderRadius: '24px', background: '#00d4ff', border: 'none', color: 'white', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}
+                  style={{ padding: '10px 20px', borderRadius: '50px', background: 'linear-gradient(135deg, #00b8e0, #0070aa)', border: 'none', color: 'white', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem', boxShadow: '0 4px 14px rgba(0,184,224,0.25)', whiteSpace: 'nowrap' }}
                 >
                   Enviar
                 </button>
