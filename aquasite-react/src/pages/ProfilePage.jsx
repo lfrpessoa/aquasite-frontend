@@ -35,7 +35,7 @@ const ProfilePage = () => {
 
   const loadUserProfile = async (username) => {
     try {
-      const res = await fetch(`/api/users/${username}/stats`);
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/stats`);
       const stats = await res.json();
       setUserProfile({
         username,
@@ -62,7 +62,7 @@ const ProfilePage = () => {
 
   const loadPosts = async (username) => {
     try {
-      const res = await fetch(`/api/users/${username}/posts`);
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/posts`);
       const data = await res.json();
       setPosts(Array.isArray(data) ? data : []);
     } catch {}
@@ -71,7 +71,7 @@ const ProfilePage = () => {
   const handleDeletePost = async (postId) => {
     if (!window.confirm('Apagar este post?')) return;
     try {
-      const res = await fetch(`/api/posts/${postId}`, {
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${postId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: currentUser })
@@ -86,7 +86,7 @@ const ProfilePage = () => {
 
   const handleLike = async (postId) => {
     try {
-      const res = await fetch(`/api/posts/${postId}/like`, {
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${postId}/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: currentUser })
@@ -100,7 +100,7 @@ const ProfilePage = () => {
     const text = commentInputs[postId];
     if (!text?.trim()) return;
     try {
-      const res = await fetch(`/api/posts/${postId}/comments`, {
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${postId}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: currentUser, text })
@@ -118,7 +118,7 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      await fetch(`/api/users/${currentUser}/bio`, {
+      await fetch(`https://aquasite-frontend.onrender.com/api/users/${currentUser}/bio`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bio: editData.bio, currentUser })
@@ -179,7 +179,7 @@ const ProfilePage = () => {
       const newAvatar = ev.target.result;
       setUserProfile(prev => ({ ...prev, avatar: newAvatar }));
       try {
-        await fetch(`/api/users/${currentUser}/avatar`, {
+        await fetch(`https://aquasite-frontend.onrender.com/api/users/${currentUser}/avatar`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ avatar: newAvatar, currentUser })

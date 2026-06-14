@@ -30,10 +30,10 @@ const NotificationsPage = () => {
   const loadNotifications = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/notifications/${currentUser}`)
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/notifications/${currentUser}`)
       const data = await res.json()
       setNotifications(Array.isArray(data) ? data : [])
-      await fetch(`/api/notifications/${currentUser}/read`, { method: 'PUT' })
+      await fetch(`https://aquasite-frontend.onrender.com/api/notifications/${currentUser}/read`, { method: 'PUT' })
     } catch {}
     setLoading(false)
   }
