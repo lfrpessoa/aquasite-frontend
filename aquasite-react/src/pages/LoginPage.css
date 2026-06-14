@@ -1,0 +1,58 @@
+.login-app {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #001f3f 0%, #003f5c 25%, #005f73 50%, #0a9396 75%, #94d3a2 100%);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container-melhorado {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3rem 2.5rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 420px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+  position: relative;
+}
+
+.btn-voltar-melhorado {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: auto;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 14px;
+  color: #90e0ef;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.btn-voltar-melhorado:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #00d4ff;
+  transform: translateY(-1px);
+}

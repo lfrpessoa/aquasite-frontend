@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "username": "testuser",
+      "email": "test@aquasite.com",
+      "password": "123456"
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "user": "@Marina",
+      "content": "Avistei golfinhos hoje na praia! Que espetáculo incrível!",
+      "image": "/img/golfinho.jpg",
+      "likes": 12,
+      "time": "14:30",
+      "comments": []
+    },
+    {
+      "id": 2,
+      "user": "@João",
+      "content": "Sabia que os tubarões existem há mais de 450 milhões de anos? São mais antigos que as árvores!",
+      "image": null,
+      "likes": 8,
+      "time": "13:15",
+      "comments": []
+    },
+    {
+      "id": 3,
+      "user": "@Ana",
+      "content": "Mergulhei hoje e encontrei um cardume de peixes-palhaço. A vida marinha é fantástica!",
+      "image": "/img/peixepalhaço.webp",
+      "likes": 25,
+      "time": "11:00",
+      "comments": []
+    },
+    {
+      "id": 4,
+      "user": "@testuser",
+      "content": "Post de teste via Playwright!",
+      "image": null,
+      "likes": 1,
+      "time": "13:10",
+      "comments": []
+    }
+  ],
+  "nextPostId": 5,
+  "nextCommentId": 1
+}

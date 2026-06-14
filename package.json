@@ -1,0 +1,19 @@
+{
+  "name": "aquasite-main",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "aquasite-react",
+    "server"
+  ],
+  "scripts": {
+    "dev:server": "npm --prefix server run start",
+    "dev": "concurrently \"npm run dev:server\" \"npm --prefix aquasite-react run dev\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
