@@ -97,9 +97,15 @@ async function initDB() {
       sender NVARCHAR(100) NOT NULL,
       receiver NVARCHAR(100) NOT NULL,
       content NVARCHAR(MAX) NOT NULL,
+      image NVARCHAR(MAX) NULL,
       created_at DATETIME DEFAULT GETDATE(),
       is_read BIT DEFAULT 0
     )
+  `);
+
+  await db.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('messages') AND name = 'image')
+    ALTER TABLE messages ADD image NVARCHAR(MAX) NULL
   `);
 
   await db.request().query(`
@@ -402,13 +408,14 @@ app.get('/api/messages/:user1/:user2', async (req, res) => {
 // POST /api/messages
 app.post('/api/messages', async (req, res) => {
   try {
-    const { sender, receiver, content } = req.body;
+    const { sender, receiver, content, image } = req.body;
     const db = await getPool();
     const result = await db.request()
       .input('sender', sql.NVarChar, sender)
       .input('receiver', sql.NVarChar, receiver)
-      .input('content', sql.NVarChar, content)
-      .query('INSERT INTO messages (sender, receiver, content) OUTPUT INSERTED.* VALUES (@sender, @receiver, @content)');
+      .input('content', sql.NVarChar, content || '')
+      .input('image', sql.NVarChar, image || null)
+      .query('INSERT INTO messages (sender, receiver, content, image) OUTPUT INSERTED.* VALUES (@sender, @receiver, @content, @image)');
     res.json(result.recordset[0]);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao enviar mensagem' });

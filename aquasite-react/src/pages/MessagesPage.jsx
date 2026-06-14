@@ -8,8 +8,10 @@ const MessagesPage = () => {
   const [conversations, setConversations] = useState([])
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
+  const [imagePreview, setImagePreview] = useState(null)
   const [activeChat, setActiveChat] = useState(chatWith || null)
   const messagesEndRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     if (!currentUser) { navigate('/login'); return }
@@ -40,17 +42,28 @@ const MessagesPage = () => {
     } catch {}
   }
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => setImagePreview(ev.target.result)
+    reader.readAsDataURL(file)
+    e.target.value = ''
+  }
+
   const sendMessage = async () => {
-    if (!newMessage.trim() || !activeChat) return
+    if (!newMessage.trim() && !imagePreview) return
+    if (!activeChat) return
     try {
       const res = await fetch('https://aquasite-frontend.onrender.com/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sender: currentUser, receiver: activeChat, content: newMessage })
+        body: JSON.stringify({ sender: currentUser, receiver: activeChat, content: newMessage, image: imagePreview || null })
       })
       const msg = await res.json()
       setMessages(prev => [...prev, msg])
       setNewMessage('')
+      setImagePreview(null)
       loadConversations()
     } catch {}
   }
@@ -142,15 +155,23 @@ const MessagesPage = () => {
                   return (
                     <div key={msg.id} style={{ display: 'flex', justifyContent: isMine ? 'flex-end' : 'flex-start' }}>
                       <div style={{
-                        maxWidth: '68%', padding: '9px 14px',
+                        maxWidth: '72%', padding: msg.image && !msg.content ? '6px' : '9px 14px',
                         borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                         background: isMine ? 'linear-gradient(135deg, #00b8e0, #0070aa)' : 'rgba(0,30,65,0.9)',
                         border: isMine ? 'none' : '1px solid rgba(255,255,255,0.08)',
                         color: 'white', fontSize: '0.9rem', wordBreak: 'break-word',
-                        boxShadow: isMine ? '0 4px 14px rgba(0,184,224,0.2)' : 'none'
+                        boxShadow: isMine ? '0 4px 14px rgba(0,184,224,0.2)' : 'none',
+                        overflow: 'hidden'
                       }}>
-                        {msg.content}
-                        <div style={{ fontSize: '0.7rem', color: isMine ? 'rgba(255,255,255,0.65)' : 'rgba(200,230,240,0.35)', marginTop: '4px', textAlign: 'right' }}>
+                        {msg.image && (
+                          <img
+                            src={msg.image}
+                            alt="imagem"
+                            style={{ display: 'block', maxWidth: '100%', maxHeight: '260px', borderRadius: '12px', objectFit: 'cover', marginBottom: msg.content ? '8px' : '0' }}
+                          />
+                        )}
+                        {msg.content && <span>{msg.content}</span>}
+                        <div style={{ fontSize: '0.7rem', color: isMine ? 'rgba(255,255,255,0.65)' : 'rgba(200,230,240,0.35)', marginTop: '4px', textAlign: 'right', paddingRight: msg.image && !msg.content ? '6px' : '0', paddingBottom: msg.image && !msg.content ? '2px' : '0' }}>
                           {msg.created_at ? new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : ''}
                         </div>
                       </div>
@@ -161,20 +182,39 @@ const MessagesPage = () => {
               </div>
 
               {/* Input */}
-              <div style={{ padding: '12px 18px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', gap: '10px', background: 'rgba(0,15,35,0.5)' }}>
-                <input
-                  value={newMessage}
-                  onChange={e => setNewMessage(e.target.value)}
-                  onKeyPress={e => e.key === 'Enter' && sendMessage()}
-                  placeholder={`Mensagem para @${activeChat}...`}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '50px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.875rem', outline: 'none' }}
-                />
-                <button
-                  onClick={sendMessage}
-                  style={{ padding: '10px 20px', borderRadius: '50px', background: 'linear-gradient(135deg, #00b8e0, #0070aa)', border: 'none', color: 'white', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem', boxShadow: '0 4px 14px rgba(0,184,224,0.25)', whiteSpace: 'nowrap' }}
-                >
-                  Enviar
-                </button>
+              <div style={{ padding: '10px 18px 12px', borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(0,15,35,0.5)' }}>
+                {/* Preview da imagem selecionada */}
+                {imagePreview && (
+                  <div style={{ marginBottom: '8px', position: 'relative', display: 'inline-block' }}>
+                    <img src={imagePreview} alt="preview" style={{ height: '72px', borderRadius: '10px', objectFit: 'cover', border: '1.5px solid rgba(0,212,255,0.3)' }} />
+                    <button
+                      onClick={() => setImagePreview(null)}
+                      style={{ position: 'absolute', top: '-6px', right: '-6px', width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(220,50,50,0.9)', border: 'none', color: 'white', cursor: 'pointer', fontSize: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}
+                    >×</button>
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  {/* Botão de imagem */}
+                  <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageSelect} />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    title="Enviar imagem"
+                    style={{ width: '38px', height: '38px', borderRadius: '50%', background: imagePreview ? 'rgba(0,212,255,0.2)' : 'rgba(255,255,255,0.07)', border: `1px solid ${imagePreview ? 'rgba(0,212,255,0.5)' : 'rgba(255,255,255,0.12)'}`, color: imagePreview ? '#00d4ff' : 'rgba(200,230,240,0.55)', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.2s ease' }}
+                  >📷</button>
+                  <input
+                    value={newMessage}
+                    onChange={e => setNewMessage(e.target.value)}
+                    onKeyPress={e => e.key === 'Enter' && sendMessage()}
+                    placeholder={`Mensagem para @${activeChat}...`}
+                    style={{ flex: 1, padding: '10px 16px', borderRadius: '50px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontSize: '0.875rem', outline: 'none' }}
+                  />
+                  <button
+                    onClick={sendMessage}
+                    style={{ padding: '10px 20px', borderRadius: '50px', background: 'linear-gradient(135deg, #00b8e0, #0070aa)', border: 'none', color: 'white', fontWeight: 700, cursor: 'pointer', fontSize: '0.875rem', boxShadow: '0 4px 14px rgba(0,184,224,0.25)', whiteSpace: 'nowrap', flexShrink: 0 }}
+                  >
+                    Enviar
+                  </button>
+                </div>
               </div>
             </>
           )}
