@@ -422,6 +422,30 @@ app.post('/api/messages', async (req, res) => {
   }
 });
 
+// DELETE /api/messages/:id
+app.delete('/api/messages/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { user } = req.body;
+    const db = await getPool();
+
+    const msgRes = await db.request()
+      .input('id', sql.Int, id)
+      .query('SELECT sender FROM messages WHERE id = @id');
+
+    if (msgRes.recordset.length === 0)
+      return res.status(404).json({ success: false, error: 'Mensagem não encontrada' });
+
+    if (msgRes.recordset[0].sender !== user)
+      return res.status(403).json({ success: false, error: 'Sem permissão' });
+
+    await db.request().input('id', sql.Int, id).query('DELETE FROM messages WHERE id = @id');
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Erro ao deletar mensagem' });
+  }
+});
+
 // GET /api/search?q=termo
 app.get('/api/search', async (req, res) => {
   try {

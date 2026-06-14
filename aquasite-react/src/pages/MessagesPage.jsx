@@ -10,6 +10,7 @@ const MessagesPage = () => {
   const [newMessage, setNewMessage] = useState('')
   const [imagePreview, setImagePreview] = useState(null)
   const [activeChat, setActiveChat] = useState(chatWith || null)
+  const [hoveredMsg, setHoveredMsg] = useState(null)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -39,6 +40,21 @@ const MessagesPage = () => {
       const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/${currentUser}/${other}`)
       const data = await res.json()
       setMessages(data)
+    } catch {}
+  }
+
+  const deleteMessage = async (msgId) => {
+    try {
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/${msgId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: currentUser })
+      })
+      const data = await res.json()
+      if (data.success) {
+        setMessages(prev => prev.filter(m => m.id !== msgId))
+        loadConversations()
+      }
     } catch {}
   }
 
@@ -153,7 +169,20 @@ const MessagesPage = () => {
                 {messages.map(msg => {
                   const isMine = msg.sender === currentUser
                   return (
-                    <div key={msg.id} style={{ display: 'flex', justifyContent: isMine ? 'flex-end' : 'flex-start' }}>
+                    <div
+                      key={msg.id}
+                      style={{ display: 'flex', justifyContent: isMine ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}
+                      onMouseEnter={() => setHoveredMsg(msg.id)}
+                      onMouseLeave={() => setHoveredMsg(null)}
+                    >
+                      {/* Botão deletar — aparece ao hover, só nas minhas mensagens */}
+                      {isMine && hoveredMsg === msg.id && (
+                        <button
+                          onClick={() => deleteMessage(msg.id)}
+                          title="Apagar mensagem"
+                          style={{ background: 'rgba(220,50,50,0.15)', border: '1px solid rgba(220,50,50,0.3)', color: 'rgba(255,100,100,0.8)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s ease' }}
+                        >🗑</button>
+                      )}
                       <div style={{
                         maxWidth: '72%', padding: msg.image && !msg.content ? '6px' : '9px 14px',
                         borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
