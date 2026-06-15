@@ -34,20 +34,34 @@ const LoginPage = () => {
       }
     }
 
-    if (password.length < 3) {
-      setStatusMsg('Senha deve ter pelo menos 3 caracteres.');
-      setStatusColor('#ffa726');
-      setIsLoading(false);
-      return;
+    if (!isLogin) {
+      if (password.length < 8) {
+        setStatusMsg('A senha deve ter pelo menos 8 caracteres.');
+        setStatusColor('#ffa726');
+        setIsLoading(false);
+        return;
+      }
+      if (!/[a-zA-Z]/.test(password)) {
+        setStatusMsg('A senha deve conter pelo menos uma letra.');
+        setStatusColor('#ffa726');
+        setIsLoading(false);
+        return;
+      }
+      if (!/[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+        setStatusMsg('A senha deve conter pelo menos um número ou caractere especial.');
+        setStatusColor('#ffa726');
+        setIsLoading(false);
+        return;
+      }
     }
 
     try {
       const endpoint = isLogin ? '/api/users/login' : '/api/users/register';
-      const body = isLogin 
+      const body = isLogin
         ? { login, password }
         : { username, email, password };
-      
-      const response = await fetch(`http://localhost:4000${endpoint}`, {
+
+      const response = await fetch(`https://aquasite-frontend.onrender.com${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -158,6 +172,19 @@ const LoginPage = () => {
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
+            {!isLogin && password.length > 0 && (
+              <div style={{ fontSize: '0.75rem', marginTop: '-8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                <span style={{ color: password.length >= 8 ? '#4ecdc4' : '#ff6b6b' }}>
+                  {password.length >= 8 ? '✓' : '✗'} Mínimo 8 caracteres
+                </span>
+                <span style={{ color: /[a-zA-Z]/.test(password) ? '#4ecdc4' : '#ff6b6b' }}>
+                  {/[a-zA-Z]/.test(password) ? '✓' : '✗'} Pelo menos uma letra
+                </span>
+                <span style={{ color: /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? '#4ecdc4' : '#ff6b6b' }}>
+                  {/[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? '✓' : '✗'} Pelo menos um número ou símbolo
+                </span>
+              </div>
+            )}
             
             <button 
               type="submit" 
