@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import './LoginPage.css'
 
 const getPasswordStrength = (pwd) => {
-  const hasLen = pwd.length >= 8
+  const hasLen = pwd.length >= 8 && pwd.length <= 16
   const hasLetter = /[a-zA-Z]/.test(pwd)
   const hasNumSym = /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)
+  const isStrong = hasLen && hasLetter && hasNumSym
   const score = [hasLen, hasLetter, hasNumSym].filter(Boolean).length
   return {
-    hasLen, hasLetter, hasNumSym, score,
-    label: score === 3 ? 'Senha forte' : score === 2 ? 'Senha média' : 'Senha fraca',
-    color: score === 3 ? '#4ecdc4' : score === 2 ? '#ffa726' : '#ff6b6b',
-    width: score === 3 ? '100%' : score === 2 ? '66%' : '33%',
+    hasLen, hasLetter, hasNumSym, isStrong, score,
+    label: isStrong ? 'Senha forte' : score === 2 ? 'Senha média' : 'Senha fraca',
+    color: isStrong ? '#4ecdc4' : score === 2 ? '#ffa726' : '#ff6b6b',
+    width: isStrong ? '100%' : score === 2 ? '66%' : '33%',
   }
 }
 
@@ -48,21 +49,10 @@ const LoginPage = () => {
     }
 
     if (!isLogin) {
-      if (password.length < 8) {
-        setStatusMsg('A senha deve ter pelo menos 8 caracteres.');
-        setStatusColor('#ffa726');
-        setIsLoading(false);
-        return;
-      }
-      if (!/[a-zA-Z]/.test(password)) {
-        setStatusMsg('A senha deve conter pelo menos uma letra.');
-        setStatusColor('#ffa726');
-        setIsLoading(false);
-        return;
-      }
-      if (!/[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-        setStatusMsg('A senha deve conter pelo menos um número ou caractere especial.');
-        setStatusColor('#ffa726');
+      const { isStrong } = getPasswordStrength(password)
+      if (!isStrong) {
+        setStatusMsg('Senha fraca! Use 8–16 caracteres com letras e números ou símbolos.');
+        setStatusColor('#ff6b6b');
         setIsLoading(false);
         return;
       }
@@ -175,6 +165,7 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Senha"
                 required
+                maxLength={16}
                 className="input-field"
               />
               <button
@@ -197,7 +188,7 @@ const LoginPage = () => {
                 </div>
                 <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
                   <span style={{ color: getPasswordStrength(password).hasLen ? '#4ecdc4' : '#ff6b6b' }}>
-                    {getPasswordStrength(password).hasLen ? '✓' : '✗'} Mínimo 8 caracteres
+                    {getPasswordStrength(password).hasLen ? '✓' : '✗'} Entre 8 e 16 caracteres
                   </span>
                   <span style={{ color: getPasswordStrength(password).hasLetter ? '#4ecdc4' : '#ff6b6b' }}>
                     {getPasswordStrength(password).hasLetter ? '✓' : '✗'} Pelo menos uma letra
@@ -209,10 +200,11 @@ const LoginPage = () => {
               </div>
             )}
             
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={`submit-btn ${isLoading ? 'loading' : ''}`}
-              disabled={isLoading}
+              disabled={isLoading || (!isLogin && !getPasswordStrength(password).isStrong && password.length > 0)}
+              style={{ opacity: (!isLogin && !getPasswordStrength(password).isStrong && password.length > 0) ? 0.5 : 1 }}
             >
               {isLoading ? 'Processando...' : (isLogin ? 'Entrar' : 'Cadastrar')}
             </button>
