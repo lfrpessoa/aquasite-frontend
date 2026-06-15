@@ -267,6 +267,17 @@ app.post('/api/posts/:id/comments', async (req, res) => {
 app.post('/api/users/register', async (req, res) => {
   try {
     const { username, email, password, bio, avatar } = req.body;
+
+    if (!password || password.length < 8 || password.length > 16) {
+      return res.json({ success: false, error: 'A senha deve ter entre 8 e 16 caracteres.' });
+    }
+    if (!/[a-zA-Z]/.test(password)) {
+      return res.json({ success: false, error: 'A senha deve conter pelo menos uma letra.' });
+    }
+    if (!/[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      return res.json({ success: false, error: 'A senha deve conter pelo menos um número ou símbolo.' });
+    }
+
     const db = await getPool();
 
     const existing = await db.request()
