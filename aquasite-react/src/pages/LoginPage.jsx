@@ -172,19 +172,30 @@ const LoginPage = () => {
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-            {!isLogin && password.length > 0 && (
-              <div style={{ fontSize: '0.75rem', marginTop: '-8px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                <span style={{ color: password.length >= 8 ? '#4ecdc4' : '#ff6b6b' }}>
-                  {password.length >= 8 ? '✓' : '✗'} Mínimo 8 caracteres
-                </span>
-                <span style={{ color: /[a-zA-Z]/.test(password) ? '#4ecdc4' : '#ff6b6b' }}>
-                  {/[a-zA-Z]/.test(password) ? '✓' : '✗'} Pelo menos uma letra
-                </span>
-                <span style={{ color: /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? '#4ecdc4' : '#ff6b6b' }}>
-                  {/[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password) ? '✓' : '✗'} Pelo menos um número ou símbolo
-                </span>
-              </div>
-            )}
+            {!isLogin && password.length > 0 && (() => {
+              const hasLen = password.length >= 8
+              const hasLetter = /[a-zA-Z]/.test(password)
+              const hasNumSym = /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+              const score = [hasLen, hasLetter, hasNumSym].filter(Boolean).length
+              const strength = score === 3 ? { label: 'Senha forte', color: '#4ecdc4', width: '100%' }
+                             : score === 2 ? { label: 'Senha média', color: '#ffa726', width: '66%' }
+                             :               { label: 'Senha fraca', color: '#ff6b6b', width: '33%' }
+              return (
+                <div style={{ marginTop: '-8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '0.75rem', color: strength.color, fontWeight: 700 }}>{strength.label}</span>
+                  </div>
+                  <div style={{ height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '8px' }}>
+                    <div style={{ height: '100%', width: strength.width, background: strength.color, borderRadius: '4px', transition: 'all 0.3s ease' }} />
+                  </div>
+                  <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                    <span style={{ color: hasLen ? '#4ecdc4' : '#ff6b6b' }}>{hasLen ? '✓' : '✗'} Mínimo 8 caracteres</span>
+                    <span style={{ color: hasLetter ? '#4ecdc4' : '#ff6b6b' }}>{hasLetter ? '✓' : '✗'} Pelo menos uma letra</span>
+                    <span style={{ color: hasNumSym ? '#4ecdc4' : '#ff6b6b' }}>{hasNumSym ? '✓' : '✗'} Pelo menos um número ou símbolo</span>
+                  </div>
+                </div>
+              )
+            })()}
             
             <button 
               type="submit" 
