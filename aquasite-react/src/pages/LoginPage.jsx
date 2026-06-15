@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './LoginPage.css'
 
+const getPasswordStrength = (pwd) => {
+  const hasLen = pwd.length >= 8
+  const hasLetter = /[a-zA-Z]/.test(pwd)
+  const hasNumSym = /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)
+  const score = [hasLen, hasLetter, hasNumSym].filter(Boolean).length
+  return {
+    hasLen, hasLetter, hasNumSym, score,
+    label: score === 3 ? 'Senha forte' : score === 2 ? 'Senha média' : 'Senha fraca',
+    color: score === 3 ? '#4ecdc4' : score === 2 ? '#ffa726' : '#ff6b6b',
+    width: score === 3 ? '100%' : score === 2 ? '66%' : '33%',
+  }
+}
+
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [login, setLogin] = useState('');
@@ -172,30 +185,29 @@ const LoginPage = () => {
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-            {!isLogin && password.length > 0 && (() => {
-              const hasLen = password.length >= 8
-              const hasLetter = /[a-zA-Z]/.test(password)
-              const hasNumSym = /[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
-              const score = [hasLen, hasLetter, hasNumSym].filter(Boolean).length
-              const strength = score === 3 ? { label: 'Senha forte', color: '#4ecdc4', width: '100%' }
-                             : score === 2 ? { label: 'Senha média', color: '#ffa726', width: '66%' }
-                             :               { label: 'Senha fraca', color: '#ff6b6b', width: '33%' }
-              return (
-                <div style={{ marginTop: '-8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '0.75rem', color: strength.color, fontWeight: 700 }}>{strength.label}</span>
-                  </div>
-                  <div style={{ height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '8px' }}>
-                    <div style={{ height: '100%', width: strength.width, background: strength.color, borderRadius: '4px', transition: 'all 0.3s ease' }} />
-                  </div>
-                  <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                    <span style={{ color: hasLen ? '#4ecdc4' : '#ff6b6b' }}>{hasLen ? '✓' : '✗'} Mínimo 8 caracteres</span>
-                    <span style={{ color: hasLetter ? '#4ecdc4' : '#ff6b6b' }}>{hasLetter ? '✓' : '✗'} Pelo menos uma letra</span>
-                    <span style={{ color: hasNumSym ? '#4ecdc4' : '#ff6b6b' }}>{hasNumSym ? '✓' : '✗'} Pelo menos um número ou símbolo</span>
-                  </div>
+            {!isLogin && password.length > 0 && (
+              <div style={{ marginTop: '-8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <span style={{ fontSize: '0.75rem', color: getPasswordStrength(password).color, fontWeight: 700 }}>
+                    {getPasswordStrength(password).label}
+                  </span>
                 </div>
-              )
-            })()}
+                <div style={{ height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '8px' }}>
+                  <div style={{ height: '100%', width: getPasswordStrength(password).width, background: getPasswordStrength(password).color, borderRadius: '4px', transition: 'all 0.3s ease' }} />
+                </div>
+                <div style={{ fontSize: '0.72rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  <span style={{ color: getPasswordStrength(password).hasLen ? '#4ecdc4' : '#ff6b6b' }}>
+                    {getPasswordStrength(password).hasLen ? '✓' : '✗'} Mínimo 8 caracteres
+                  </span>
+                  <span style={{ color: getPasswordStrength(password).hasLetter ? '#4ecdc4' : '#ff6b6b' }}>
+                    {getPasswordStrength(password).hasLetter ? '✓' : '✗'} Pelo menos uma letra
+                  </span>
+                  <span style={{ color: getPasswordStrength(password).hasNumSym ? '#4ecdc4' : '#ff6b6b' }}>
+                    {getPasswordStrength(password).hasNumSym ? '✓' : '✗'} Pelo menos um número ou símbolo
+                  </span>
+                </div>
+              </div>
+            )}
             
             <button 
               type="submit" 
