@@ -1,4 +1,4 @@
-const API_BASE = 'https://aquasite-frontend.onrender.com/api';
+const API_BASE = 'https://aquasite-main-1.onrender.com/api';
 
 export async function getPosts() {
   const res = await fetch(`${API_BASE}/posts`);
