@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { API_URL } from '../config.js'
 
 const UserProfilePage = () => {
   const { username } = useParams()
@@ -25,9 +26,9 @@ const UserProfilePage = () => {
   const loadData = async () => {
     setLoading(true)
     const [statsRes, postsRes, followRes] = await Promise.allSettled([
-      fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/stats`).then(r => r.json()),
-      fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/posts`).then(r => r.json()),
-      fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/follow-status?viewer=${currentUser}`).then(r => r.json())
+      fetch(`${API_URL}/api/users/${username}/stats`).then(r => r.json()),
+      fetch(`${API_URL}/api/users/${username}/posts`).then(r => r.json()),
+      fetch(`${API_URL}/api/users/${username}/follow-status?viewer=${currentUser}`).then(r => r.json())
     ])
     if (statsRes.status === 'fulfilled') setStats(statsRes.value)
     if (postsRes.status === 'fulfilled' && Array.isArray(postsRes.value)) setPosts(postsRes.value)
@@ -37,8 +38,8 @@ const UserProfilePage = () => {
 
   const loadPostsAndStats = async () => {
     const [statsRes, postsRes] = await Promise.allSettled([
-      fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/stats`).then(r => r.json()),
-      fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/posts`).then(r => r.json())
+      fetch(`${API_URL}/api/users/${username}/stats`).then(r => r.json()),
+      fetch(`${API_URL}/api/users/${username}/posts`).then(r => r.json())
     ])
     if (statsRes.status === 'fulfilled') setStats(statsRes.value)
     if (postsRes.status === 'fulfilled' && Array.isArray(postsRes.value)) setPosts(postsRes.value)
@@ -49,7 +50,7 @@ const UserProfilePage = () => {
     setFollowLoading(true)
     try {
       const method = following ? 'DELETE' : 'POST'
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/users/${username}/follow`, {
+      const res = await fetch(`${API_URL}/api/users/${username}/follow`, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ follower: currentUser })
@@ -65,7 +66,7 @@ const UserProfilePage = () => {
   }
 
   const handleLike = async (postId) => {
-    const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${postId}/like`, {
+    const res = await fetch(`${API_URL}/api/posts/${postId}/like`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user: currentUser })
@@ -77,7 +78,7 @@ const UserProfilePage = () => {
   const handleComment = async (postId) => {
     const text = commentInputs[postId]
     if (!text?.trim()) return
-    const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${postId}/comments`, {
+    const res = await fetch(`${API_URL}/api/posts/${postId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user: currentUser, text })

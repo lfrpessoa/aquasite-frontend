@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './TwitterLayout.css'
+import { API_URL } from '../config.js'
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -278,7 +279,7 @@ const LoginForm = () => {
           setIsLoading(false)
           return
         }
-        const res = await fetch('http://localhost:4000/api/users/login', {
+        const res = await fetch(`${API_URL}/api/users/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ login, password })
@@ -308,7 +309,7 @@ const LoginForm = () => {
           setIsLoading(false)
           return
         }
-        const res = await fetch('http://localhost:4000/api/users/register', {
+        const res = await fetch(`${API_URL}/api/users/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: nomeUsuario, email, password, bio, avatar })

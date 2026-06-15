@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { API_URL } from '../config.js'
 
 const MessagesPage = () => {
   const { username: chatWith } = useParams()
@@ -28,7 +29,7 @@ const MessagesPage = () => {
 
   const loadConversations = async () => {
     try {
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/conversations/${currentUser}`)
+      const res = await fetch(`${API_URL}/api/messages/conversations/${currentUser}`)
       const data = await res.json()
       setConversations(data)
     } catch {}
@@ -36,7 +37,7 @@ const MessagesPage = () => {
 
   const loadMessages = async (other) => {
     try {
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/${currentUser}/${other}`)
+      const res = await fetch(`${API_URL}/api/messages/${currentUser}/${other}`)
       const data = await res.json()
       setMessages(data)
     } catch {}
@@ -44,7 +45,7 @@ const MessagesPage = () => {
 
   const deleteMessage = async (msgId) => {
     const res = await fetch(
-      `https://aquasite-frontend.onrender.com/api/messages/${msgId}?user=${encodeURIComponent(currentUser)}`,
+      `${API_URL}/api/messages/${msgId}?user=${encodeURIComponent(currentUser)}`,
       { method: 'DELETE' }
     )
     const data = await res.json()
@@ -67,7 +68,7 @@ const MessagesPage = () => {
     if (!newMessage.trim() && !imagePreview) return
     if (!activeChat) return
     try {
-      const res = await fetch('https://aquasite-frontend.onrender.com/api/messages', {
+      const res = await fetch('${API_URL}/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sender: currentUser, receiver: activeChat, content: newMessage, image: imagePreview || null })

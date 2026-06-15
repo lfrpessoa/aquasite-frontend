@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { API_URL } from '../config.js'
 
 const SearchPage = () => {
   const [query, setQuery] = useState('')
@@ -13,7 +14,7 @@ const SearchPage = () => {
     if (!query.trim()) return
     setLoading(true)
     try {
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/search?q=${encodeURIComponent(query)}`)
+      const res = await fetch(`${API_URL}/api/search?q=${encodeURIComponent(query)}`)
       const data = await res.json()
       setResults(data)
     } catch {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './LoginPage.css'
+import { API_URL } from '../config.js'
 
 const getPasswordStrength = (pwd) => {
   const hasLen = pwd.length >= 8 && pwd.length <= 16
@@ -64,7 +65,7 @@ const LoginPage = () => {
         ? { login, password }
         : { username, email, password };
 
-      const response = await fetch(`https://aquasite-frontend.onrender.com${endpoint}`, {
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

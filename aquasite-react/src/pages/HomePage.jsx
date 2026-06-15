@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getPosts, createPost as apiCreatePost, likePost as apiLikePost, addComment as apiAddComment } from '../services/api'
 import { useNavigate, Link } from 'react-router-dom'
+import { API_URL } from '../config.js'
 
 const usePosts = () => {
   const [posts, setPosts] = useState([]);
@@ -63,7 +64,7 @@ const usePosts = () => {
   const deletePost = async (id) => {
     const currentUser = localStorage.getItem('currentUser');
     try {
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/posts/${id}`, {
+      const res = await fetch(`${API_URL}/api/posts/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: currentUser })
@@ -265,7 +266,7 @@ const HomePage = () => {
     if (!currentUser) return;
     const fetchUnread = async () => {
       try {
-        const res = await fetch(`https://aquasite-frontend.onrender.com/api/notifications/${currentUser}/unread-count`);
+        const res = await fetch(`${API_URL}/api/notifications/${currentUser}/unread-count`);
         const data = await res.json();
         setUnreadNotifs(data.count || 0);
       } catch {}

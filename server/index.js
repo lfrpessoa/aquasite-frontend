@@ -705,6 +705,73 @@ app.put('/api/notifications/:username/read', async (req, res) => {
   }
 });
 
+// PUT /api/users/username
+app.put('/api/users/username', async (req, res) => {
+  try {
+    const { currentUsername, newUsername } = req.body;
+    if (!newUsername || !newUsername.trim())
+      return res.status(400).json({ success: false, error: 'Novo username inválido.' });
+
+    const db = await getPool();
+
+    const existing = await db.request()
+      .input('username', sql.NVarChar, newUsername.trim())
+      .query('SELECT username FROM users WHERE username = @username');
+    if (existing.recordset.length > 0)
+      return res.json({ success: false, error: 'Nome de usuário já está em uso.' });
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE users SET username = @new WHERE username = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, `@${newUsername.trim()}`)
+      .input('old', sql.NVarChar, `@${currentUsername}`)
+      .query('UPDATE posts SET usuario = @new WHERE usuario = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE comments SET usuario = @new WHERE usuario = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE follows SET follower = @new WHERE follower = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE follows SET following = @new WHERE following = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE messages SET sender = @new WHERE sender = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE messages SET receiver = @new WHERE receiver = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE notifications SET recipient = @new WHERE recipient = @old');
+
+    await db.request()
+      .input('new', sql.NVarChar, newUsername.trim())
+      .input('old', sql.NVarChar, currentUsername)
+      .query('UPDATE notifications SET sender = @new WHERE sender = @old');
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: 'Erro ao atualizar username.' });
+  }
+});
+
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT} - v2`);
