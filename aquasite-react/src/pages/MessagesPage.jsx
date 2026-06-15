@@ -10,7 +10,6 @@ const MessagesPage = () => {
   const [newMessage, setNewMessage] = useState('')
   const [imagePreview, setImagePreview] = useState(null)
   const [activeChat, setActiveChat] = useState(chatWith || null)
-  const [hoveredMsg, setHoveredMsg] = useState(null)
   const messagesEndRef = useRef(null)
   const fileInputRef = useRef(null)
 
@@ -159,6 +158,11 @@ const MessagesPage = () => {
               </div>
 
               {/* Messages */}
+              <style>{`
+                .msg-row .delete-btn { opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+                .msg-row:hover .delete-btn { opacity: 1; pointer-events: auto; }
+                .delete-btn:hover { background: rgba(220,50,50,0.3) !important; }
+              `}</style>
               <div style={{ flex: 1, overflowY: 'auto', padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {messages.length === 0 && (
                   <p style={{ color: 'rgba(200,230,240,0.3)', textAlign: 'center', marginTop: '40px', fontSize: '0.875rem' }}>Nenhuma mensagem ainda. Diga olá!</p>
@@ -168,16 +172,16 @@ const MessagesPage = () => {
                   return (
                     <div
                       key={msg.id}
+                      className="msg-row"
                       style={{ display: 'flex', justifyContent: isMine ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}
-                      onMouseEnter={() => setHoveredMsg(msg.id)}
-                      onMouseLeave={() => setHoveredMsg(null)}
                     >
-                      {/* Botão deletar — sempre no DOM, visível só no hover */}
+                      {/* Botão deletar via CSS hover */}
                       {isMine && (
                         <button
+                          className="delete-btn"
                           onClick={() => deleteMessage(msg.id)}
                           title="Apagar mensagem"
-                          style={{ background: 'rgba(220,50,50,0.15)', border: '1px solid rgba(220,50,50,0.3)', color: 'rgba(255,100,100,0.8)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'opacity 0.15s ease', opacity: hoveredMsg === msg.id ? 1 : 0, pointerEvents: hoveredMsg === msg.id ? 'auto' : 'none' }}
+                          style={{ background: 'rgba(220,50,50,0.15)', border: '1px solid rgba(220,50,50,0.3)', color: 'rgba(255,100,100,0.8)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                         >🗑</button>
                       )}
                       <div style={{

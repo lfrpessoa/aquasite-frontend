@@ -696,7 +696,7 @@ app.put('/api/notifications/:username/read', async (req, res) => {
 
 initDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT} - v2`);
   });
 }).catch(err => {
   console.error('Erro ao conectar ao banco:', err.message);
