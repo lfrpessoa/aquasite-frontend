@@ -13,7 +13,7 @@ const SearchPage = () => {
     if (!query.trim()) return
     setLoading(true)
     try {
-      const res = await fetch(`https://aquasite-main-1.onrender.com/api/search?q=${encodeURIComponent(query)}`)
+      const res = await fetch(`https://aquasite-frontend.onrender.com/api/search?q=${encodeURIComponent(query)}`)
       const data = await res.json()
       setResults(data)
     } catch {
