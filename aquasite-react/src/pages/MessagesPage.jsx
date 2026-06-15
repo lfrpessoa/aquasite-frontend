@@ -175,12 +175,12 @@ const MessagesPage = () => {
                       onMouseEnter={() => setHoveredMsg(msg.id)}
                       onMouseLeave={() => setHoveredMsg(null)}
                     >
-                      {/* Botão deletar — aparece ao hover, só nas minhas mensagens */}
-                      {isMine && hoveredMsg === msg.id && (
+                      {/* Botão deletar — sempre no DOM, visível só no hover */}
+                      {isMine && (
                         <button
                           onClick={() => deleteMessage(msg.id)}
                           title="Apagar mensagem"
-                          style={{ background: 'rgba(220,50,50,0.15)', border: '1px solid rgba(220,50,50,0.3)', color: 'rgba(255,100,100,0.8)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s ease' }}
+                          style={{ background: 'rgba(220,50,50,0.15)', border: '1px solid rgba(220,50,50,0.3)', color: 'rgba(255,100,100,0.8)', borderRadius: '50%', width: '28px', height: '28px', cursor: 'pointer', fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'opacity 0.15s ease', opacity: hoveredMsg === msg.id ? 1 : 0, pointerEvents: hoveredMsg === msg.id ? 'auto' : 'none' }}
                         >🗑</button>
                       )}
                       <div style={{
