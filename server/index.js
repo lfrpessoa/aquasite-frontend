@@ -426,7 +426,7 @@ app.post('/api/messages', async (req, res) => {
 app.delete('/api/messages/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { user } = req.body;
+    const user = req.query.user || req.body?.user;
     const db = await getPool();
 
     const msgRes = await db.request()

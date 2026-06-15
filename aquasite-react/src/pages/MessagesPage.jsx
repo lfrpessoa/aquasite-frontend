@@ -44,18 +44,15 @@ const MessagesPage = () => {
   }
 
   const deleteMessage = async (msgId) => {
-    try {
-      const res = await fetch(`https://aquasite-frontend.onrender.com/api/messages/${msgId}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: currentUser })
-      })
-      const data = await res.json()
-      if (data.success) {
-        setMessages(prev => prev.filter(m => m.id !== msgId))
-        loadConversations()
-      }
-    } catch {}
+    const res = await fetch(
+      `https://aquasite-frontend.onrender.com/api/messages/${msgId}?user=${encodeURIComponent(currentUser)}`,
+      { method: 'DELETE' }
+    )
+    const data = await res.json()
+    if (data.success) {
+      setMessages(prev => prev.filter(m => m.id !== msgId))
+      loadConversations()
+    }
   }
 
   const handleImageSelect = (e) => {
