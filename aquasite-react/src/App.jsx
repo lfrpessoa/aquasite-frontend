@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import IndexPage from './pages/IndexPage'
 import HomePage from './pages/HomePage'
@@ -10,13 +10,25 @@ import SearchPage from './pages/SearchPage'
 import UserProfilePage from './pages/UserProfilePage'
 import MessagesPage from './pages/MessagesPage'
 import NotificationsPage from './pages/NotificationsPage'
-import Bubbles from './components/Bubbles'
+import { API_URL } from './config.js'
 import './App.css'
 
+const HEARTBEAT_INTERVAL_MS = 25000
+
 function App() {
+  useEffect(() => {
+    const sendHeartbeat = () => {
+      const currentUser = localStorage.getItem('currentUser')
+      if (!currentUser) return
+      fetch(`${API_URL}/api/users/${currentUser}/heartbeat`, { method: 'POST' }).catch(() => {})
+    }
+    sendHeartbeat()
+    const id = setInterval(sendHeartbeat, HEARTBEAT_INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <Router>
-      <Bubbles />
       <Routes>
         <Route path="/" element={<IndexPage />} />
         <Route path="/home" element={<HomePage />} />

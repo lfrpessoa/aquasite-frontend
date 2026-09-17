@@ -68,7 +68,7 @@ const MessagesPage = () => {
     if (!newMessage.trim() && !imagePreview) return
     if (!activeChat) return
     try {
-      const res = await fetch('${API_URL}/api/messages', {
+      const res = await fetch(`${API_URL}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sender: currentUser, receiver: activeChat, content: newMessage, image: imagePreview || null })
@@ -131,10 +131,15 @@ const MessagesPage = () => {
                   transition: 'all 0.15s ease'
                 }}
               >
-                {conv.avatar
-                  ? <img src={conv.avatar} alt="" style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, border: '1.5px solid rgba(0,212,255,0.15)' }} />
-                  : <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>👤</div>
-                }
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  {conv.avatar
+                    ? <img src={conv.avatar} alt="" style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid rgba(0,212,255,0.15)' }} />
+                    : <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>👤</div>
+                  }
+                  {conv.online && (
+                    <span title="Online agora" style={{ position: 'absolute', bottom: '0', right: '0', width: '10px', height: '10px', borderRadius: '50%', background: '#2ecc71', border: '2px solid #011628' }} />
+                  )}
+                </div>
                 <div style={{ overflow: 'hidden' }}>
                   <p style={{ color: '#f0f9ff', margin: 0, fontWeight: 600, fontSize: '0.85rem' }}>@{conv.other_user}</p>
                   <p style={{ color: 'rgba(200,230,240,0.4)', margin: 0, fontSize: '0.75rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.last_message}</p>

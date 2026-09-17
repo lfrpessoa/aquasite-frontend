@@ -6,6 +6,7 @@ const typeConfig = {
   like:    { icon: '❤️', label: 'curtiu seu post' },
   comment: { icon: '💬', label: 'comentou no seu post' },
   follow:  { icon: '👤', label: 'começou a te seguir' },
+  message: { icon: '✉️', label: 'te enviou uma mensagem' },
 }
 
 function timeAgo(dateStr) {
@@ -79,7 +80,9 @@ const NotificationsPage = () => {
 
         {notifications.map(notif => {
           const cfg = typeConfig[notif.type] || { icon: '🔔', label: notif.type }
-          const target = notif.sender === currentUser ? '/perfil' : `/usuario/${notif.sender}`
+          const target = notif.type === 'message'
+            ? `/mensagens/${notif.sender}`
+            : notif.sender === currentUser ? '/perfil' : `/usuario/${notif.sender}`
           return (
             <div
               key={notif.id}
@@ -95,7 +98,7 @@ const NotificationsPage = () => {
               {/* Ícone do tipo */}
               <div style={{ position: 'relative', marginLeft: '-22px', marginTop: '22px', flexShrink: 0 }}>
                 <span style={{
-                  background: notif.type === 'like' ? '#e11d48' : notif.type === 'comment' ? '#0077b6' : '#6d28d9',
+                  background: notif.type === 'like' ? '#e11d48' : notif.type === 'comment' ? '#0077b6' : notif.type === 'message' ? '#0d9488' : '#6d28d9',
                   borderRadius: '50%', width: '18px', height: '18px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px',
                   boxShadow: '0 1px 6px rgba(0,0,0,0.4)'

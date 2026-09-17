@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://SEU-PROJETO.onrender.com/api/:path*"
+      "destination": "https://aquasite-server-1.onrender.com/api/:path*"
     }
   ]
 }

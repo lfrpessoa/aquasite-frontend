@@ -1,10 +1,3 @@
-/* === CURIOSIDADES === */
-.curiosidades-app {
-  min-height: 100vh;
-  background: linear-gradient(160deg, #020e1e 0%, #011628 40%, #012233 70%, #013344 100%);
-  padding: 2rem 1rem;
-}
-
 .btn-voltar {
   position: fixed;
   top: 1.5rem;
@@ -27,128 +20,6 @@
   background: rgba(0, 212, 255, 0.18);
   transform: translateX(-3px);
   box-shadow: 0 4px 16px rgba(0, 212, 255, 0.2);
-}
-
-.ecosistema-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-top: 2rem;
-}
-
-.ecosistema-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.ecosistema-header h1 {
-  font-size: 2.8rem;
-  color: #00d4ff;
-  margin-bottom: 0.75rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  text-shadow: 0 0 40px rgba(0, 212, 255, 0.35);
-}
-
-.ecosistema-header p {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.filtro-container {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.filtro-container h3 {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.filtro-buttons {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.filtro-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.7);
-  padding: 7px 18px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.filtro-btn:hover,
-.filtro-btn.active {
-  background: rgba(0, 212, 255, 0.18);
-  border-color: rgba(0, 212, 255, 0.5);
-  color: #00d4ff;
-  box-shadow: 0 2px 12px rgba(0, 212, 255, 0.2);
-}
-
-.oceano-background {
-  background: rgba(0, 20, 40, 0.5);
-  border-radius: 20px;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.animais-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 1.25rem;
-}
-
-.animal-card {
-  background: rgba(0, 30, 60, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(12px);
-}
-
-.animal-card:hover {
-  transform: translateY(-6px);
-  background: rgba(0, 45, 85, 0.85);
-  border-color: rgba(0, 212, 255, 0.25);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 255, 0.1);
-}
-
-.animal-card.selected {
-  border-color: #00d4ff;
-  background: rgba(0, 212, 255, 0.1);
-  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.3);
-}
-
-.animal-emoji {
-  font-size: 2.8rem;
-  margin-bottom: 0.75rem;
-  display: block;
-}
-
-.animal-card h3 {
-  color: #e8f4f8;
-  font-size: 1rem;
-  margin-bottom: 0.4rem;
-  font-weight: 600;
-}
-
-.animal-tipo {
-  color: #00d4ff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .modal-overlay {
@@ -664,7 +535,7 @@
   margin: 0 auto;
   padding: 2rem 1.5rem;
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 320px;
   gap: 1.75rem;
 }
 
@@ -990,6 +861,7 @@
 @media (max-width: 768px) {
   .home-main {
     grid-template-columns: 1fr;
+    margin: 0 auto;
     padding: 1rem;
     gap: 1rem;
   }
@@ -1009,20 +881,6 @@
   .header-content nav a {
     font-size: 0.8rem;
     padding: 6px 10px;
-  }
-
-  .animais-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 0.875rem;
-  }
-
-  .filtro-buttons {
-    gap: 0.5rem;
-  }
-
-  .filtro-btn {
-    padding: 6px 13px;
-    font-size: 0.8rem;
   }
 
   .perfil-header {

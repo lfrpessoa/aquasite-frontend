@@ -6,7 +6,7 @@ const UserProfilePage = () => {
   const { username } = useParams()
   const navigate = useNavigate()
   const currentUser = localStorage.getItem('currentUser')
-  const [stats, setStats] = useState({ postsCount: 0, followersCount: 0, followingCount: 0, bio: '', avatar: null })
+  const [stats, setStats] = useState({ postsCount: 0, followersCount: 0, followingCount: 0, bio: '', avatar: null, online: false })
   const [posts, setPosts] = useState([])
   const [following, setFollowing] = useState(false)
   const [followLoading, setFollowLoading] = useState(false)
@@ -123,12 +123,20 @@ const UserProfilePage = () => {
 
         {/* Profile card */}
         <div style={{ ...cardStyle, display: 'flex', alignItems: 'flex-start', gap: '1.25rem', flexWrap: 'wrap', padding: '1.5rem' }}>
-          {stats.avatar
-            ? <img src={stats.avatar} alt="avatar" style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,212,255,0.35)', flexShrink: 0 }} />
-            : <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px', border: '2px solid rgba(0,212,255,0.25)', flexShrink: 0 }}>👤</div>
-          }
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            {stats.avatar
+              ? <img src={stats.avatar} alt="avatar" style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,212,255,0.35)' }} />
+              : <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px', border: '2px solid rgba(0,212,255,0.25)' }}>👤</div>
+            }
+            {stats.online && (
+              <span title="Online agora" style={{ position: 'absolute', bottom: '2px', right: '2px', width: '16px', height: '16px', borderRadius: '50%', background: '#2ecc71', border: '2px solid #011628', boxShadow: '0 0 6px rgba(46,204,113,0.7)' }} />
+            )}
+          </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h2 style={{ color: '#f0f9ff', margin: '0 0 4px', fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.2px' }}>@{username}</h2>
+            <h2 style={{ color: '#f0f9ff', margin: '0 0 4px', fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              @{username}
+              {stats.online && <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#2ecc71', background: 'rgba(46,204,113,0.12)', border: '1px solid rgba(46,204,113,0.35)', borderRadius: '10px', padding: '2px 8px' }}>online</span>}
+            </h2>
             {stats.bio && <p style={{ color: 'rgba(200,230,240,0.6)', margin: '0 0 12px', fontSize: '0.875rem', lineHeight: 1.5 }}>{stats.bio}</p>}
             <div style={{ display: 'flex', gap: '20px' }}>
               <span style={{ color: '#f0f9ff', fontSize: '0.875rem' }}>

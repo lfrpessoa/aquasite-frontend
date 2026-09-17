@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { getPosts, createPost as apiCreatePost, likePost as apiLikePost, addComment as apiAddComment } from '../services/api'
 import { useNavigate, Link } from 'react-router-dom'
 import { API_URL } from '../config.js'
+import PraiaProximaWidget from '../components/PraiaProximaWidget'
 
 const usePosts = () => {
   const [posts, setPosts] = useState([]);
@@ -233,20 +234,6 @@ const CreatePost = ({ onSubmit }) => {
   );
 };
 
-const Sidebar = () => {
-  const [weather] = useState({ temp: '24°C', condition: 'Ondas calmas' });
-
-  return (
-    <div className="sidebar">
-      <div className="widget weather-widget">
-        <h4>Condições do Mar</h4>
-        <p>{weather.temp}</p>
-        <p>{weather.condition}</p>
-      </div>
-    </div>
-  );
-};
-
 const HomePage = () => {
   const { posts, addPost, likePost, addComment, deletePost, loading, error } = usePosts();
   const [currentUser, setCurrentUser] = useState('');
@@ -333,7 +320,9 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-        <Sidebar />
+        <div className="sidebar">
+          <PraiaProximaWidget />
+        </div>
       </main>
     </div>
   );

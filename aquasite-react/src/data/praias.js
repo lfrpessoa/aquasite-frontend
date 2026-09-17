@@ -1,0 +1,27 @@
+// Lista curada de praias brasileiras conhecidas, usada para achar a mais
+// próxima da localização do usuário (cálculo de distância feito no cliente).
+export const praias = [
+  { nome: 'Copacabana', cidade: 'Rio de Janeiro', uf: 'RJ', lat: -22.9711, lon: -43.1822 },
+  { nome: 'Ipanema', cidade: 'Rio de Janeiro', uf: 'RJ', lat: -22.9868, lon: -43.2044 },
+  { nome: 'Praia Grande', cidade: 'Praia Grande', uf: 'SP', lat: -24.0084, lon: -46.4121 },
+  { nome: 'Praia de Santos', cidade: 'Santos', uf: 'SP', lat: -23.9718, lon: -46.3298 },
+  { nome: 'Guarujá', cidade: 'Guarujá', uf: 'SP', lat: -23.9931, lon: -46.2564 },
+  { nome: 'Praia do Rosa', cidade: 'Imbituba', uf: 'SC', lat: -28.1264, lon: -48.6386 },
+  { nome: 'Balneário Camboriú', cidade: 'Balneário Camboriú', uf: 'SC', lat: -26.9906, lon: -48.6349 },
+  { nome: 'Praia de Jurerê', cidade: 'Florianópolis', uf: 'SC', lat: -27.4372, lon: -48.4931 },
+  { nome: 'Praia do Cassino', cidade: 'Rio Grande', uf: 'RS', lat: -32.1978, lon: -52.1508 },
+  { nome: 'Torres', cidade: 'Torres', uf: 'RS', lat: -29.3350, lon: -49.7269 },
+  { nome: 'Porto de Galinhas', cidade: 'Ipojuca', uf: 'PE', lat: -8.5106, lon: -35.0031 },
+  { nome: 'Boa Viagem', cidade: 'Recife', uf: 'PE', lat: -8.1195, lon: -34.9018 },
+  { nome: 'Porto da Barra', cidade: 'Salvador', uf: 'BA', lat: -13.0100, lon: -38.5306 },
+  { nome: 'Praia do Forte', cidade: 'Mata de São João', uf: 'BA', lat: -12.5794, lon: -38.0031 },
+  { nome: 'Morro de São Paulo', cidade: 'Cairu', uf: 'BA', lat: -13.3808, lon: -38.9139 },
+  { nome: 'Praia do Futuro', cidade: 'Fortaleza', uf: 'CE', lat: -3.7361, lon: -38.4708 },
+  { nome: 'Jericoacoara', cidade: 'Jijoca de Jericoacoara', uf: 'CE', lat: -2.7975, lon: -40.5137 },
+  { nome: 'Ponta Negra', cidade: 'Natal', uf: 'RN', lat: -5.8767, lon: -35.1631 },
+  { nome: 'Praia do Francês', cidade: 'Marechal Deodoro', uf: 'AL', lat: -9.7508, lon: -35.8397 },
+  { nome: 'Praia de Camburi', cidade: 'Vitória', uf: 'ES', lat: -20.2761, lon: -40.2717 },
+  { nome: 'Praia de Ubatuba', cidade: 'Ubatuba', uf: 'SP', lat: -23.4339, lon: -45.0839 },
+  { nome: 'Praia de Maragogi', cidade: 'Maragogi', uf: 'AL', lat: -9.0119, lon: -35.2222 },
+  { nome: 'Barra Grande', cidade: 'Maraú', uf: 'BA', lat: -14.2725, lon: -39.0125 },
+]

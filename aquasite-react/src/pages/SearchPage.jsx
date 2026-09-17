@@ -93,10 +93,15 @@ const SearchPage = () => {
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    {user.avatar
-                      ? <img src={user.avatar} alt="avatar" style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid rgba(0,212,255,0.2)', flexShrink: 0 }} />
-                      : <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0, border: '1.5px solid rgba(0,212,255,0.15)' }}>👤</div>
-                    }
+                    <div style={{ position: 'relative', flexShrink: 0 }}>
+                      {user.avatar
+                        ? <img src={user.avatar} alt="avatar" style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid rgba(0,212,255,0.2)' }} />
+                        : <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(0,60,100,0.8), rgba(0,100,150,0.5))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', border: '1.5px solid rgba(0,212,255,0.15)' }}>👤</div>
+                      }
+                      {user.online && (
+                        <span title="Online agora" style={{ position: 'absolute', bottom: '0', right: '0', width: '11px', height: '11px', borderRadius: '50%', background: '#2ecc71', border: '2px solid #011628' }} />
+                      )}
+                    </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ color: '#f0f9ff', margin: 0, fontWeight: 700, fontSize: '0.9rem' }}>@{user.username}</p>
                       {user.bio && <p style={{ color: 'rgba(200,230,240,0.45)', margin: '3px 0 0', fontSize: '0.8rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.bio}</p>}
